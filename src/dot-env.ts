@@ -7,6 +7,7 @@ export function dotEnv() {
     process.exit(1);
   }
 
+  //todo: fix bug: const envTemplate = dotenv.config({ path: '.env-template' }); is loading in the template variables so there is nocase when the error will load
   // check that all the .env are there and give an example input based on the .env-template
   const envTemplate = dotenv.config({ path: '.env-template' });
   let requiredEnvVars: {key: string, example: string}[] = []
