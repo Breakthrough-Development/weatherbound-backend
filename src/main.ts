@@ -8,6 +8,7 @@ const requiredEnvVars = [
   { key: 'GOOGLE_CLIENT_ID', example: 'abc123xyz' },
   { key: 'GOOGLE_CLIENT_SECRET', example: 'secret123' },
   { key: 'PORT', example: '3000' },
+  { key: 'DOMAIN', example: 'http://localhost' },
 ];
 
 if (envFileLoadResult.error) {
