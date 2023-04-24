@@ -2,7 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as dotenv from 'dotenv';
 
-dotenv.config({ path: '.env' }); // Load environment variables from .env file
+const envFileLoadResult = dotenv.config({ path: '.env' });
 
 const requiredEnvVars = [
   { key: 'GOOGLE_CLIENT_ID', example: 'abc123xyz' },
@@ -10,10 +10,14 @@ const requiredEnvVars = [
   { key: 'PORT', example: '3000' },
 ];
 
+if (envFileLoadResult.error) {
+  console.error(`Error: Could not load environment variables from .env file. ${envFileLoadResult.error}`);
+  process.exit(1);
+}
+
 for (const envVar of requiredEnvVars) {
   if (!process.env[envVar.key]) {
-    console.error(`Error: ${envVar.key} environment variable is not defined.`);
-    console.error(`Please set the ${envVar.key} environment variable to a value. For example: ${envVar.example}`);
+    console.error(`Error: ${envVar.key} environment variable is not defined. Please set the ${envVar.key} environment variable to a value. For example: ${envVar.example}`);
     process.exit(1);
   }
 }
