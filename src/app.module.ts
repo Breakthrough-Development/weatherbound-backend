@@ -12,7 +12,8 @@ import { JwtModule } from "@nestjs/jwt";
 @Module({
   imports: [
     JwtModule.register({
-      secret: process.env.JWT_SECRET,
+      // todo: JWT_SECRET may be coming in empty
+      secret: `${process.env.JWT_SECRET}`,
       signOptions: { expiresIn: "1h" }
     }),
     TypeOrmModule.forRoot({
