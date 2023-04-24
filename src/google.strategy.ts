@@ -3,7 +3,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-google-oauth20";
 import { ProfileInterface } from "./model/profile.interface";
 import { UsersService } from "./services/users.service";
-import { User } from "./user.entity";
+import { User } from "./entities/user.entity";
 import { AuthService } from "./services/auth.service";
 import { Response } from 'express';
 
