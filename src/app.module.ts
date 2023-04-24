@@ -4,17 +4,19 @@ import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PassportModule } from "@nestjs/passport";
 import { GoogleStrategy } from "./google.strategy";
+import { User } from "./user.entity";
+import { UsersService } from "./services/users.service";
 
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: "sqlite",
     database: "database.sqlite",
-    entities: [],
+    entities: [User],
     synchronize: true
   }),
-    PassportModule],
+    PassportModule, TypeOrmModule.forFeature([User])],
   controllers: [AppController],
-  providers: [AppService, GoogleStrategy]
+  providers: [AppService, GoogleStrategy, UsersService]
 })
 export class AppModule {
 }
