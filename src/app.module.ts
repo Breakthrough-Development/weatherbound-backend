@@ -2,14 +2,14 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './entities/user.entity';
+import { User } from './modules/users/user.entity';
 import { UsersService } from './modules/users/users.service';
 import { AuthService } from './auth/auth.service';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './auth/auth-module';
 import { JwtService } from '@nestjs/jwt';
 import { SettingsModule } from './modules/settings/settings.module';
-import { Settings } from './entities/settings.entity';
+import { Settings } from './modules/settings/settings.entity';
 
 @Module({
   imports: [
