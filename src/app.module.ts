@@ -22,7 +22,6 @@ import { Settings } from './modules/settings/settings.entity';
       entities: [User, Settings],
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([User]),
   ],
   controllers: [AppController],
   providers: [AppService, UserService, AuthService, JwtService],
