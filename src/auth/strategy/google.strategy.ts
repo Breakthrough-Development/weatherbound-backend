@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
 import { Profile as ProfileInterface } from 'passport';
-import { UsersService } from '../../modules/users/users.service';
+import { UserService } from '../../modules/user/user.service';
 import { AuthService } from '../auth.service';
-import { User } from '../../modules/users/user.entity';
+import { User } from '../../modules/user/user.entity';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
-    private readonly usersService: UsersService,
+    private readonly usersService: UserService,
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
   ) {
@@ -41,7 +41,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     // Check if the user already exists in the database
     const user =
       (await this.usersService.findUserByEmail(email)) ||
-      (await this.usersService.createUser({
+      (await this.usersService.create({
         email,
         name,
         photo,

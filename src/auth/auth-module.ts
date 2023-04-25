@@ -3,7 +3,7 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
-import { UsersModule } from '../modules/users/users.module';
+import { UserModule } from '../modules/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { dotEnv } from '../dot-env';
 import { GoogleStrategy } from './strategy/google.strategy';
@@ -21,7 +21,7 @@ import { GoogleStrategy } from './strategy/google.strategy';
         };
       },
     }),
-    UsersModule,
+    UserModule,
     PassportModule,
   ],
   providers: [GoogleStrategy, AuthService, JwtStrategy],

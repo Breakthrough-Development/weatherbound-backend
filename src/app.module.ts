@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './modules/users/user.entity';
-import { UsersService } from './modules/users/users.service';
+import { User } from './modules/user/user.entity';
+import { UserService } from './modules/user/user.service';
 import { AuthService } from './auth/auth.service';
-import { UsersModule } from './modules/users/users.module';
+import { UserModule } from './modules/user/user.module';
 import { AuthModule } from './auth/auth-module';
 import { JwtService } from '@nestjs/jwt';
 import { SettingsModule } from './modules/settings/settings.module';
@@ -15,7 +15,7 @@ import { Settings } from './modules/settings/settings.entity';
   imports: [
     SettingsModule,
     AuthModule,
-    UsersModule,
+    UserModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'database.sqlite',
@@ -25,6 +25,6 @@ import { Settings } from './modules/settings/settings.entity';
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AppController],
-  providers: [AppService, UsersService, AuthService, JwtService],
+  providers: [AppService, UserService, AuthService, JwtService],
 })
 export class AppModule {}

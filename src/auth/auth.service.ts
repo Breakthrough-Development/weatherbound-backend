@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../modules/users/users.service';
+import { UserService } from '../modules/user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    private readonly usersService: UsersService,
+    private readonly usersService: UserService,
   ) {}
 
   signJwt(userId: number): string {
