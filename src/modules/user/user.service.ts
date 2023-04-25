@@ -19,12 +19,7 @@ export class UserService {
 
   async create(user: User): Promise<User> {
     const newUser = this.usersRepository.create(user);
-
     const newSetting = new Settings();
-    // Set default values for the settings
-    // e.g., newSetting.weatherApiUrl = 'https://api.example.com/weather';
-    // newSetting.apiKey = 'your-api-key';
-
     newUser.setting = await this.settingsRepository.save(newSetting);
 
     return this.usersRepository.save(newUser);

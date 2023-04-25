@@ -13,11 +13,11 @@ export class Settings {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ unique: true })
-  key: string;
+  @Column({ unique: true, nullable: true })
+  apiKey: string;
 
-  @Column()
-  url: string;
+  @Column({ nullable: true })
+  weatherApiUrl: string;
 
   @OneToOne(() => User, (user) => user.setting)
   @JoinColumn()
