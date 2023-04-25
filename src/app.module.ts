@@ -3,7 +3,7 @@ import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { PassportModule } from "@nestjs/passport";
-import { GoogleStrategy } from "./google.strategy";
+import { GoogleStrategy } from "./strategy/google.strategy";
 import { User } from "./entities/user.entity";
 import { UsersService } from "./services/users.service";
 import { AuthService } from "./services/auth.service";
