@@ -12,7 +12,7 @@ export class SettingsService {
   ) {}
 
   async findByUser(user: User): Promise<Settings> {
-    return await this.settingsRepository.findOne({ where: user });
+    return await this.settingsRepository.findOne({ where: { user: user } });
   }
 
   async update(user: User, settingsData: Partial<Settings>): Promise<Settings> {
