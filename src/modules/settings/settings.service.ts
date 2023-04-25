@@ -17,6 +17,7 @@ export class SettingsService {
 
   async update(user: User, settingsData: Partial<Settings>): Promise<Settings> {
     const settings = await this.findByUser(user);
+    delete settingsData.id;
     Object.assign(settings, settingsData);
     return await this.settingsRepository.save(settings);
   }
