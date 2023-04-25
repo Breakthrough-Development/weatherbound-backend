@@ -8,15 +8,18 @@ import { AuthService } from './auth/auth.service';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './auth/auth-module';
 import { JwtService } from '@nestjs/jwt';
+import { SettingsModule } from './modules/settings/settings.module';
+import { Settings } from './entities/settings.entity';
 
 @Module({
   imports: [
+    SettingsModule,
     AuthModule,
     UsersModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'database.sqlite',
-      entities: [User],
+      entities: [User, Settings],
       synchronize: true,
     }),
     TypeOrmModule.forFeature([User]),
