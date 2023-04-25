@@ -13,4 +13,5 @@ export class AuthService {
   verifyJwt(token: string): { userId: number } {
     return this.jwtService.verify<{ userId: number }>(token);
   }
+
 }
