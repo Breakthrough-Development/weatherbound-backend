@@ -2,20 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
 import { Profile as ProfileInterface } from 'passport';
-import { UsersService } from "../services/users.service";
-import { AuthService } from "../services/auth.service";
-import { User } from "../entities/user.entity";
+import { UsersService } from '../../modules/users/users.service';
+import { AuthService } from '../auth.service';
+import { User } from '../../entities/user.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
     private readonly usersService: UsersService,
     private readonly authService: AuthService,
+    private readonly configService: ConfigService,
   ) {
     super({
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: `${process.env.DOMAIN}:${process.env.PORT}/auth/google/callback`,
+      clientID: configService.get<string>('GOOGLE_CLIENT_ID'),
+      clientSecret: configService.get<string>('GOOGLE_CLIENT_SECRET'),
+      callbackURL: `${configService.get<string>(
+        'DOMAIN',
+      )}:${configService.get<string>('PORT')}/auth/google/callback`,
       scope: ['email', 'profile'],
       passReqToCallback: true, // Add this line to pass the request object to the callback
     });
@@ -34,7 +38,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       photos: [{ value: photo } = {} as { value?: string }], // Update the default value here
     } = profile;
 
-
     // Check if the user already exists in the database
     const user =
       (await this.usersService.findUserByEmail(email)) ||
@@ -44,11 +47,8 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         photo,
       } as User));
 
-    // Create a JWT token with user ID
-    const token = this.authService.signJwt(user.id);
-
     // Attach the token to the request object
-    req['token'] = token;
+    req['token'] = this.authService.signJwt(user.id);
 
     // Call the "done" callback with the user object
     done(null, user);

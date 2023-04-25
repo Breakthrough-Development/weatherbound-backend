@@ -1,9 +1,9 @@
 export interface ProfileInterface {
   id: string;
   displayName: string;
-  name: { familyName: string; givenName: string; }
-  emails: { value: string; verified: boolean; }[];
-  photos: { value: string; }[],
+  name: { familyName: string; givenName: string };
+  emails: { value: string; verified: boolean }[];
+  photos: { value: string }[];
   provider: string;
   _raw: string;
   _json: {
@@ -13,8 +13,7 @@ export interface ProfileInterface {
     family_name: string;
     picture: string;
     email: string;
-    email_verified: boolean
+    email_verified: boolean;
     locale: string;
-  }
-
+  };
 }

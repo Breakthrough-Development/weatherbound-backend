@@ -1,33 +1,27 @@
-import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
-import { TypeOrmModule } from "@nestjs/typeorm";
-import { PassportModule } from "@nestjs/passport";
-import { GoogleStrategy } from "./strategy/google.strategy";
-import { User } from "./entities/user.entity";
-import { UsersService } from "./services/users.service";
-import { AuthService } from "./services/auth.service";
-import { JwtModule } from "@nestjs/jwt";
+import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { UsersService } from './modules/users/users.service';
+import { AuthService } from './auth/auth.service';
+import { UsersModule } from './modules/users/users.module';
+import { AuthModule } from './auth/auth-module';
+import { JwtService } from '@nestjs/jwt';
 
 @Module({
   imports: [
-    JwtModule.register({
-      // todo: JWT_SECRET may be coming in empty
-      secret: `${process.env.JWT_SECRET}`,
-      signOptions: { expiresIn: "1h" }
-    }),
+    AuthModule,
+    UsersModule,
     TypeOrmModule.forRoot({
-      type: "sqlite",
-      database: "database.sqlite",
+      type: 'sqlite',
+      database: 'database.sqlite',
       entities: [User],
-      synchronize: true
+      synchronize: true,
     }),
-    PassportModule,
-    TypeOrmModule.forFeature([User])
+    TypeOrmModule.forFeature([User]),
   ],
   controllers: [AppController],
-  providers: [AppService, GoogleStrategy, UsersService, AuthService]
+  providers: [AppService, UsersService, AuthService, JwtService],
 })
-export class AppModule {
-}
-
+export class AppModule {}
