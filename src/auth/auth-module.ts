@@ -7,6 +7,8 @@ import { UserModule } from '../modules/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { dotEnv } from '../dot-env';
 import { GoogleStrategy } from './strategy/google.strategy';
+import { AuthController } from './auth.controller';
+import { SettingsModule } from '../modules/settings/settings.module';
 
 @Module({
   imports: [
@@ -21,9 +23,11 @@ import { GoogleStrategy } from './strategy/google.strategy';
         };
       },
     }),
+    SettingsModule,
     UserModule,
     PassportModule,
   ],
+  controllers: [AuthController],
   providers: [GoogleStrategy, AuthService, JwtStrategy],
   exports: [AuthService],
 })
