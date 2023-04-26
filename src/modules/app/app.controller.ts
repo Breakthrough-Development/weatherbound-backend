@@ -5,10 +5,14 @@ import { Response } from 'express';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { GetUser } from '../../auth/get-user.decorator';
 import { User } from '../user/user.entity';
+import { SettingsService } from '../settings/settings.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly settingsService: SettingsService,
+  ) {}
 
   @Get()
   getHello(): string {
@@ -22,7 +26,8 @@ export class AppController {
   @Get('auth/verify')
   @UseGuards(JwtAuthGuard)
   async verify(@GetUser() user: User) {
-    return user;
+    const settings = await this.settingsService.findByUser(user);
+    return { ...user, settings };
   }
 
   @Get('auth/google/callback')
