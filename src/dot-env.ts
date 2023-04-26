@@ -55,5 +55,7 @@ export function dotEnv() {
     DOMAIN: process.env.DOMAIN,
     WEB_REDIRECT_URL: process.env.WEB_REDIRECT_URL,
     JWT_SECRET: process.env.JWT_SECRET,
+    DEVELOPMENT_URL: process.env.DEVELOPMENT_URL,
+    PRODUCTION_URL: process.env.PRODUCTION_URL,
   };
 }
