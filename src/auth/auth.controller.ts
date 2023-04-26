@@ -1,7 +1,7 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
-import { User } from '../modules/user/user.entity';
+import { UserEntity } from '../modules/user/user.entity';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { SettingsService } from '../modules/settings/settings.service';
 import { GetUser } from './get-user.decorator';
@@ -16,7 +16,7 @@ export class AuthController {
 
   @Get('verify')
   @UseGuards(JwtAuthGuard)
-  async verify(@GetUser() user: User) {
+  async verify(@GetUser() user: UserEntity) {
     const settings = await this.settingsService.findByUser(user);
     return { ...user, settings };
   }

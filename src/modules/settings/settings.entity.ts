@@ -6,10 +6,10 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm';
-import { User } from '../user/user.entity';
+import { UserEntity } from '../user/user.entity';
 
 @Entity()
-export class Settings {
+export class SettingsEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -19,7 +19,7 @@ export class Settings {
   @Column({ nullable: true })
   weatherApiUrl: string;
 
-  @OneToOne(() => User, (user) => user.setting)
+  @OneToOne(() => UserEntity, (user) => user.setting)
   @JoinColumn()
-  user: User;
+  user: UserEntity;
 }

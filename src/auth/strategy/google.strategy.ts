@@ -4,7 +4,7 @@ import { Strategy } from 'passport-google-oauth20';
 import { Profile as ProfileInterface } from 'passport';
 import { UserService } from '../../modules/user/user.service';
 import { AuthService } from '../auth.service';
-import { User } from '../../modules/user/user.entity';
+import { UserEntity } from '../../modules/user/user.entity';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -45,7 +45,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         email,
         name,
         photo,
-      } as User));
+      } as UserEntity));
 
     // Attach the token to the request object
     req['token'] = this.authService.signJwt(user.id);

@@ -1,7 +1,7 @@
 import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { Settings } from '../settings/settings.entity';
+import { SettingsEntity } from '../settings/settings.entity';
 @Entity()
-export class User {
+export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -14,6 +14,8 @@ export class User {
   @Column({ nullable: true })
   photo?: string;
 
-  @OneToOne(() => Settings, (settings) => settings.user, { cascade: true })
-  setting: Settings;
+  @OneToOne(() => SettingsEntity, (settings) => settings.user, {
+    cascade: true,
+  })
+  setting: SettingsEntity;
 }
