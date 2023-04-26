@@ -10,9 +10,11 @@ import { AuthModule } from '../../auth/auth-module';
 import { JwtService } from '@nestjs/jwt';
 import { SettingsModule } from '../settings/settings.module';
 import { SettingsEntity } from '../settings/settings.entity';
+import { WeatherModule } from '../weather/weather.module';
 
 @Module({
   imports: [
+    WeatherModule,
     SettingsModule,
     AuthModule,
     UserModule,
