@@ -2,6 +2,9 @@ import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
+import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
+import { GetUser } from '../../auth/get-user.decorator';
+import { User } from '../user/user.entity';
 
 @Controller()
 export class AppController {
@@ -14,7 +17,13 @@ export class AppController {
 
   @Get('auth/google')
   @UseGuards(AuthGuard('google'))
-  async googleAuth() {}
+  async googleAuth(): Promise<void> {}
+
+  @Get('auth/verify')
+  @UseGuards(JwtAuthGuard)
+  async verify(@GetUser() user: User) {
+    return user;
+  }
 
   @Get('auth/google/callback')
   @UseGuards(AuthGuard('google'))
