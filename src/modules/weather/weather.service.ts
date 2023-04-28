@@ -44,7 +44,8 @@ export class WeatherService {
     query: string,
     settings: SettingsEntity,
   ) {
-    const url = `${settings.weatherApiUrl}/current?access_key=${settings.apiKey}&query=${query}`;
+    //todo: let user decide on the unit
+    const url = `${settings.weatherApiUrl}/current?access_key=${settings.apiKey}&query=${query}&units=f`;
     const response = await axios.get(url);
     return response.data;
   }
