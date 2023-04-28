@@ -35,4 +35,16 @@ export class AuthController {
     // Handle the Google authentication callback
     res.redirect(process.env.WEB_REDIRECT_URL);
   }
+
+  @Get('logout')
+  async logout(@Res() res: Response): Promise<void> {
+    res.cookie('token', '', {
+      maxAge: 0,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'strict',
+    });
+
+    res.send('Logged out successfully');
+  }
 }
