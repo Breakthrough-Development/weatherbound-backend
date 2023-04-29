@@ -1,4 +1,11 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { WeatherService } from './weather.service';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { UserEntity } from '../user/user.entity';
