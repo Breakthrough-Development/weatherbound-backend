@@ -1,11 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { SettingsService } from './settings.service';
 import { SettingsEntity } from './settings.entity';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
@@ -23,11 +16,10 @@ export class SettingsController {
   }
 
   @Post()
-  @HttpCode(204)
   async updateSettings(
     @GetUser() user: UserEntity,
     @Body() settingsData: Partial<SettingsEntity>,
-  ) {
-    await this.settingsService.update(user, settingsData);
+  ): Promise<SettingsEntity> {
+    return await this.settingsService.update(user, settingsData);
   }
 }
