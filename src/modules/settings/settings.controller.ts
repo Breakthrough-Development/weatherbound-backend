@@ -4,6 +4,7 @@ import { SettingsEntity } from './settings.entity';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { UserEntity } from '../user/user.entity';
 import { GetUser } from '../../auth/get-user.decorator';
+import { UpdateSettingsDto } from './dto/update-settings.dto';
 
 @Controller('settings')
 @UseGuards(JwtAuthGuard)
@@ -18,7 +19,7 @@ export class SettingsController {
   @Post()
   async updateSettings(
     @GetUser() user: UserEntity,
-    @Body() settingsData: Partial<SettingsEntity>,
+    @Body() settingsData: UpdateSettingsDto,
   ): Promise<SettingsEntity> {
     return await this.settingsService.update(user, settingsData);
   }
