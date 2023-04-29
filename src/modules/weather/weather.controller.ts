@@ -50,6 +50,17 @@ export class WeatherController {
     @Query('query') query: string,
   ) {
     const settings = await this.settingsService.findByUser(user);
+    // todo: use guard dto
+    // Check if weatherApiUrl and apiKey are strings
+    if (
+      typeof settings.weatherApiUrl !== 'string' ||
+      typeof settings.apiKey !== 'string'
+    ) {
+      throw new HttpException(
+        'Weather API URL and API Key must be provided',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     return await this.weatherService.getCurrentWeather(user, query, settings);
   }
 
