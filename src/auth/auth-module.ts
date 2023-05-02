@@ -32,12 +32,12 @@ import { DesktopGoogleStrategy } from './strategy/desktop-google.strategy';
   controllers: [AuthController],
   providers: [
     {
-      provide: 'WEB_GOOGLE_STRATEGY',
+      provide: 'web',
       useClass: WebGoogleStrategy,
       inject: [UserService, AuthService, ConfigService],
     },
     {
-      provide: 'DESKTOP_GOOGLE_STRATEGY',
+      provide: 'desktop',
       useClass: DesktopGoogleStrategy,
       inject: [UserService, AuthService, ConfigService],
     },

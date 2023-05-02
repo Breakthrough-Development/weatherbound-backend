@@ -11,6 +11,13 @@ export class DesktopGoogleStrategy extends GoogleStrategy {
     authService: AuthService,
     configService: ConfigService,
   ) {
-    super('desktop', usersService, authService, configService);
+    super(
+      'desktop',
+      configService.get<string>('DESKTOP_GOOGLE_CLIENT_ID'),
+      configService.get<string>('DESKTOP_GOOGLE_CLIENT_SECRET'),
+      usersService,
+      authService,
+      configService,
+    );
   }
 }
