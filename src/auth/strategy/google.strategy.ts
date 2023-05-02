@@ -8,19 +8,25 @@ import { UserEntity } from '../../modules/user/user.entity';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class GoogleStrategy extends PassportStrategy(Strategy) {
+export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
     private readonly name: string,
-    private readonly clientID: string,
-    private readonly clientSecret: string,
     private readonly usersService: UserService,
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
   ) {
+    const clientId =
+      name === 'web'
+        ? configService.get<string>('WEB_GOOGLE_CLIENT_ID')
+        : configService.get<string>('DESKTOP_GOOGLE_CLIENT_ID');
+    const clientSecret =
+      name === 'web'
+        ? configService.get<string>('DESKTOP_GOOGLE_CLIENT_SECRET')
+        : configService.get<string>('DESKTOP_GOOGLE_CLIENT_SECRET');
     super(
       {
-        clientID,
-        clientSecret,
+        clientID: clientId,
+        clientSecret: clientSecret,
         callbackURL: `${configService.get<string>(
           'DOMAIN',
         )}:${configService.get<string>('PORT')}/auth/google/callback`,

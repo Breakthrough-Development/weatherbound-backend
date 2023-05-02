@@ -11,13 +11,6 @@ export class WebGoogleStrategy extends GoogleStrategy {
     authService: AuthService,
     configService: ConfigService,
   ) {
-    super(
-      'web',
-      configService.get<string>('WEB_GOOGLE_CLIENT_ID'),
-      configService.get<string>('WEB_GOOGLE_CLIENT_SECRET'),
-      usersService,
-      authService,
-      configService,
-    );
+    super('web', usersService, authService, configService);
   }
 }
