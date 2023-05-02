@@ -6,11 +6,10 @@ import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '../modules/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { dotEnv } from '../dot-env';
+import { GoogleStrategy } from './strategy/google.strategy';
 import { AuthController } from './auth.controller';
 import { SettingsModule } from '../modules/settings/settings.module';
 import { UserService } from '../modules/user/user.service';
-import { WebGoogleStrategy } from './strategy/web-google.strategy';
-import { DesktopGoogleStrategy } from './strategy/desktop-google.strategy';
 
 @Module({
   imports: [
@@ -33,13 +32,17 @@ import { DesktopGoogleStrategy } from './strategy/desktop-google.strategy';
   providers: [
     {
       provide: 'WEB_GOOGLE_STRATEGY',
-      useClass: WebGoogleStrategy,
+      useClass: GoogleStrategy,
       inject: [UserService, AuthService, ConfigService],
+      useFactory: (usersService, authService, configService) =>
+        new GoogleStrategy('web', usersService, authService, configService),
     },
     {
-      provide: 'DESKTOP_GOOGLE_STRATEGY',
-      useClass: DesktopGoogleStrategy,
+      provide: 'WEB_GOOGLE_STRATEGY',
+      useClass: GoogleStrategy,
       inject: [UserService, AuthService, ConfigService],
+      useFactory: (usersService, authService, configService) =>
+        new GoogleStrategy('desktop', usersService, authService, configService),
     },
     AuthService,
     JwtStrategy,
