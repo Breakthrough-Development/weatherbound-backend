@@ -31,20 +31,19 @@ import { UserService } from '../modules/user/user.service';
   controllers: [AuthController],
   providers: [
     {
-      provide: 'WEB_GOOGLE_STRATEGY', // Use a custom name for the web strategy
+      provide: 'WEB_GOOGLE_STRATEGY',
       useClass: GoogleStrategy,
       inject: [UserService, AuthService, ConfigService],
       useFactory: (usersService, authService, configService) =>
         new GoogleStrategy('web', usersService, authService, configService),
     },
     {
-      provide: 'DESKTOP_GOOGLE_STRATEGY', // Use a custom name for the desktop strategy
+      provide: 'WEB_GOOGLE_STRATEGY',
       useClass: GoogleStrategy,
       inject: [UserService, AuthService, ConfigService],
       useFactory: (usersService, authService, configService) =>
         new GoogleStrategy('desktop', usersService, authService, configService),
     },
-    ,
     AuthService,
     JwtStrategy,
   ],
