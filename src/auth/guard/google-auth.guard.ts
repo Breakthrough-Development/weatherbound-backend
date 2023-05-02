@@ -8,9 +8,9 @@ export class GoogleAuthGuard extends AuthGuard(['web', 'desktop']) {
     const type = request.params.type;
 
     if (type === 'web') {
-      request.strategy = 'WEB_GOOGLE_STRATEGY';
+      request.strategy = 'web';
     } else if (type === 'desktop') {
-      request.strategy = 'WEB_GOOGLE_STRATEGY';
+      request.strategy = 'desktop';
     } else {
       throw new BadRequestException('Invalid auth type');
     }
