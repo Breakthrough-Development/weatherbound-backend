@@ -10,19 +10,31 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
+    name: string,
     private readonly usersService: UserService,
     private readonly authService: AuthService,
     private readonly configService: ConfigService,
   ) {
-    super({
-      clientID: configService.get<string>('GOOGLE_CLIENT_ID'),
-      clientSecret: configService.get<string>('GOOGLE_CLIENT_SECRET'),
-      callbackURL: `${configService.get<string>(
-        'DOMAIN',
-      )}:${configService.get<string>('PORT')}/auth/google/callback`,
-      scope: ['email', 'profile'],
-      passReqToCallback: true, // Add this line to pass the request object to the callback
-    });
+    const clientId =
+      name === 'web'
+        ? configService.get<string>('WEB_GOOGLE_CLIENT_ID')
+        : configService.get<string>('DESKTOP_GOOGLE_CLIENT_ID');
+    const clientSecret =
+      name === 'web'
+        ? configService.get<string>('DESKTOP_GOOGLE_CLIENT_SECRET')
+        : configService.get<string>('DESKTOP_GOOGLE_CLIENT_SECRET');
+    super(
+      {
+        clientID: clientId,
+        clientSecret: clientSecret,
+        callbackURL: `${configService.get<string>(
+          'DOMAIN',
+        )}:${configService.get<string>('PORT')}/auth/google/callback`,
+        scope: ['email', 'profile'],
+        passReqToCallback: true, // Add this line to pass the request object to the callback
+      },
+      name,
+    );
   }
 
   async validate(

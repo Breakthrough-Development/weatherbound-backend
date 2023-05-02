@@ -9,6 +9,7 @@ import { dotEnv } from '../dot-env';
 import { GoogleStrategy } from './strategy/google.strategy';
 import { AuthController } from './auth.controller';
 import { SettingsModule } from '../modules/settings/settings.module';
+import { UserService } from '../modules/user/user.service';
 
 @Module({
   imports: [
@@ -28,7 +29,25 @@ import { SettingsModule } from '../modules/settings/settings.module';
     PassportModule,
   ],
   controllers: [AuthController],
-  providers: [GoogleStrategy, AuthService, JwtStrategy],
+  providers: [
+    {
+      provide: 'WEB_GOOGLE_STRATEGY', // Use a custom name for the web strategy
+      useClass: GoogleStrategy,
+      inject: [UserService, AuthService, ConfigService],
+      useFactory: (usersService, authService, configService) =>
+        new GoogleStrategy('web', usersService, authService, configService),
+    },
+    {
+      provide: 'DESKTOP_GOOGLE_STRATEGY', // Use a custom name for the desktop strategy
+      useClass: GoogleStrategy,
+      inject: [UserService, AuthService, ConfigService],
+      useFactory: (usersService, authService, configService) =>
+        new GoogleStrategy('desktop', usersService, authService, configService),
+    },
+    ,
+    AuthService,
+    JwtStrategy,
+  ],
   exports: [AuthService],
 })
 export class AuthModule {}
