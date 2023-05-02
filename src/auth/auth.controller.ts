@@ -1,23 +1,29 @@
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 import { UserEntity } from '../modules/user/user.entity';
 import { JwtAuthGuard } from './jwt-auth.guard';
 import { SettingsService } from '../modules/settings/settings.service';
 import { GetUser } from './get-user.decorator';
-import { GoogleAuthGuard } from './guard/google-auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly settingsService: SettingsService) {}
 
-  @Get(':type/google') // 'type' is a route parameter
-  @UseGuards(GoogleAuthGuard)
+  @Get('google')
+  @UseGuards(AuthGuard('google'))
   async googleAuth(): Promise<void> {}
 
-  @Get(':type/google/callback') @UseGuards(GoogleAuthGuard) googleAuthRedirect(
-    @Req() req,
-    @Res() res: Response,
-  ): void {
+  @Get('verify')
+  @UseGuards(JwtAuthGuard)
+  async verify(@GetUser() user: UserEntity) {
+    const settings = await this.settingsService.findByUser(user);
+    return { ...user, settings };
+  }
+
+  @Get('google/callback')
+  @UseGuards(AuthGuard('google'))
+  googleAuthRedirect(@Req() req, @Res() res: Response): void {
     // Set the JWT token as a cookie in the response
     res.cookie('token', req['token'], {
       maxAge: 86400000, // 24 hours
@@ -28,13 +34,6 @@ export class AuthController {
 
     // Handle the Google authentication callback
     res.redirect(process.env.WEB_REDIRECT_URL);
-  }
-
-  @Get('verify')
-  @UseGuards(JwtAuthGuard)
-  async verify(@GetUser() user: UserEntity) {
-    const settings = await this.settingsService.findByUser(user);
-    return { ...user, settings };
   }
 
   @Get('logout')

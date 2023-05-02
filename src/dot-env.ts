@@ -49,10 +49,8 @@ export function dotEnv() {
 
   // Return a configuration object instead of calling process.exit()
   return {
-    WEB_GOOGLE_CLIENT_ID: process.env.WEB_GOOGLE_CLIENT_ID,
-    WEB_GOOGLE_CLIENT_SECRET: process.env.WEB_GOOGLE_CLIENT_SECRET,
-    DESKTOP_GOOGLE_CLIENT_ID: process.env.DESKTOP_GOOGLE_CLIENT_ID,
-    DESKTOP_GOOGLE_CLIENT_SECRET: process.env.DESKTOP_GOOGLE_CLIENT_SECRET,
+    GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     PORT: process.env.PORT,
     DOMAIN: process.env.DOMAIN,
     WEB_REDIRECT_URL: process.env.WEB_REDIRECT_URL,
