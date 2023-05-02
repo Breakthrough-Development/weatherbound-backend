@@ -1,12 +1,8 @@
-import {
-  BadRequestException,
-  ExecutionContext,
-  Injectable,
-} from '@nestjs/common';
+// google-auth.guard.ts
 import { AuthGuard } from '@nestjs/passport';
+import { BadRequestException, ExecutionContext } from '@nestjs/common';
 
-@Injectable()
-export class GoogleAuthGuard extends AuthGuard() {
+export class GoogleAuthGuard extends AuthGuard(['web', 'desktop']) {
   getRequest(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
     const type = request.params.type;
@@ -19,6 +15,6 @@ export class GoogleAuthGuard extends AuthGuard() {
       throw new BadRequestException('Invalid auth type');
     }
 
-    return super.canActivate(request);
+    return request;
   }
 }
