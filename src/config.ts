@@ -1,4 +1,42 @@
-import { IsNotEmpty, IsUrl, IsString, IsInt, Min, Max } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+  ValidationArguments,
+  Validate,
+} from 'class-validator';
+import validator from 'validator';
+
+@ValidatorConstraint({ name: 'isPortNumberString', async: false })
+class IsPortNumberString implements ValidatorConstraintInterface {
+  validate(text: string, args: ValidationArguments) {
+    const isNumberString = validator.isNumeric(text, { no_symbols: true });
+    if (!isNumberString) return false;
+
+    const number = parseInt(text, 10);
+    return number >= 1 && number <= 65535;
+  }
+
+  defaultMessage(args: ValidationArguments) {
+    return 'PORT must be an integer number between 1 and 65535';
+  }
+}
+
+@ValidatorConstraint({ name: 'isUrlOrLocalhost', async: false })
+class IsUrlOrLocalhost implements ValidatorConstraintInterface {
+  validate(text: string, args: ValidationArguments) {
+    const isUrl = validator.isURL(text);
+    const isLocalhost =
+      text.startsWith('http://localhost') ||
+      text.startsWith('https://localhost');
+    return isUrl || isLocalhost;
+  }
+
+  defaultMessage(args: ValidationArguments) {
+    return 'Invalid URL format';
+  }
+}
 
 export class AppConfig {
   @IsNotEmpty()
@@ -9,19 +47,16 @@ export class AppConfig {
   @IsString()
   GOOGLE_CLIENT_SECRET: string;
 
-  // this can break because it coming in as a string
   @IsNotEmpty()
-  @IsInt()
-  @Min(1)
-  @Max(65535)
-  PORT: number;
+  @Validate(IsPortNumberString)
+  PORT: string;
 
   @IsNotEmpty()
-  @IsUrl()
+  @Validate(IsUrlOrLocalhost)
   DOMAIN: string;
 
   @IsNotEmpty()
-  @IsUrl()
+  @Validate(IsUrlOrLocalhost)
   WEB_REDIRECT_URL: string;
 
   @IsNotEmpty()
@@ -29,10 +64,10 @@ export class AppConfig {
   JWT_SECRET: string;
 
   @IsNotEmpty()
-  @IsUrl()
+  @Validate(IsUrlOrLocalhost)
   DEVELOPMENT_URL: string;
 
   @IsNotEmpty()
-  @IsUrl()
+  @Validate(IsUrlOrLocalhost)
   PRODUCTION_URL: string;
 }
