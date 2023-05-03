@@ -12,7 +12,7 @@ import { SettingsModule } from '../settings/settings.module';
 import { SettingsEntity } from '../settings/settings.entity';
 import { WeatherModule } from '../weather/weather.module';
 import { ConfigModule } from '@nestjs/config';
-import { AppConfig } from '../../config';
+import { AppConfig } from '../../env/validate';
 import { validate } from 'class-validator';
 import { plainToClass } from 'class-transformer';
 
@@ -37,7 +37,7 @@ import { plainToClass } from 'class-transformer';
           });
 
           throw new Error(
-            `Error with the environment variables. Please check the console.`,
+            `Error with the environment variables. Please check the console. Scroll up to see the errors.`,
           );
         }
 

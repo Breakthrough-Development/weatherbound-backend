@@ -5,14 +5,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { UserModule } from '../modules/user/user.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { dotEnv } from '../dot-env';
+import { envVariables } from '../env/envVariables';
 import { GoogleStrategy } from './strategy/google.strategy';
 import { AuthController } from './auth.controller';
 import { SettingsModule } from '../modules/settings/settings.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ load: [dotEnv], isGlobal: true }),
+    ConfigModule.forRoot({ load: [envVariables], isGlobal: true }),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
