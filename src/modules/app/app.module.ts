@@ -11,9 +11,39 @@ import { JwtService } from '@nestjs/jwt';
 import { SettingsModule } from '../settings/settings.module';
 import { SettingsEntity } from '../settings/settings.entity';
 import { WeatherModule } from '../weather/weather.module';
+import { ConfigModule } from '@nestjs/config';
+import { AppConfig } from '../../config';
+import { validate } from 'class-validator';
+import { plainToClass } from 'class-transformer';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      load: [() => AppConfig],
+      validate: async (config: Record<string, any>) => {
+        const appConfig = plainToClass(AppConfig, config);
+        const errors = await validate(appConfig);
+
+        if (errors.length > 0) {
+          errors.forEach((error) => {
+            const errorMessage = {
+              value: error.value,
+              property: error.property,
+              constraints: error.constraints,
+              children: error.children,
+            };
+
+            console.error(errorMessage);
+          });
+
+          throw new Error(
+            `Error with the environment variables. Please check the console.`,
+          );
+        }
+
+        return config;
+      },
+    }),
     WeatherModule,
     SettingsModule,
     AuthModule,
